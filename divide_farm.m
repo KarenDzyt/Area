@@ -2,7 +2,7 @@
 
 
 
-%X = [pts.lon,pts.lat];
+% X = [pts.lon,pts.lat];
 X = [lon1,lat1];
 minPts=8;
 E=19;
@@ -34,7 +34,7 @@ for i=1:num_farm
             c5=c3(k9)+1;     
               [dim, c6] = size(C{1,i});  %当前农田的个数
             C{k10}=C{1,i}(1,c5:c6);      %以c5为界，把当前农田再划分为2块，后续加点继续划分；新田提出来
-            C{1,i}(c5:c6)=[];            %提出的田再旧田中删除
+            C{1,i}(c5:c6)=[];            %提出的田在旧田中删除
              ptsC(C{k10}(1,:))= farm_index;%更新每个点的农田编号
              farm_index=farm_index+1;
             k10=k10+1;
@@ -89,7 +89,21 @@ for i=1:num_farm
     
 end
 
+% 根据速度进一步筛选结果
 
+[dim2, num_farm] = size(C);
+ for i=1:num_farm
+    if isequal(C{1,i},{}) 
+        continue;
+    end
+       [dim3, num_size] = size(C{1,i});
+       for k=1:num_size
+           if speed1(C{1,i}(k))== 0
+               ptsC(C{1,i}(k))=0;     
+           end
+%        speed = abs(speed1(C{1,i}(k)) - speed1(C{1,i}(k-1))) ;  
+       end   
+ end
 
 global area_each;   %全局变量是字符串
  num_size=0;

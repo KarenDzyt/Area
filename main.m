@@ -6,8 +6,8 @@ clear all;
  [a,txt]=xlsread(data1); %[num, txt]= xlsread(filename, ...)把返回的数据与文本分开保存。
  lon=a(:,1);
  lat=a(:,2);
- %speed=a(:,4);
- %oren=a(:,5);
+ speed=a(:,3);
+ oren=a(:,4);
  
  %增添对日期和数字的处理 ，把数据划分为每一天
  time_wj0=txt(:,1);
@@ -62,11 +62,11 @@ for i_date=1:num_date   %遍历数组每行，每天分别计算
  
     lon1=lon(start_end(i_date*2-1):start_end(i_date*2));  %分别存储每天的经纬度
     lat1=lat(start_end(i_date*2-1):start_end(i_date*2));
-   % speed1=speed(start_end(i_date*2-1):start_end(i_date*2));
-   % oren1=oren(start_end(i_date*2-1):start_end(i_date*2));
+    speed1=speed(start_end(i_date*2-1):start_end(i_date*2));
+    oren1=oren(start_end(i_date*2-1):start_end(i_date*2));
     time1=time(start_end(i_date*2-1):start_end(i_date*2),:);  %存储每天的时间
-   % date1=date(start_end(i_date*2-1):start_end(i_date*2),:);
-     %pts=struct('date',date1,'time',time1,'lon',lon1,'lat',lat1,'speed',speed1,'oren',oren1);
+    date1=date(start_end(i_date*2-1):start_end(i_date*2),:);
+    pts=struct('date',date1,'time',time1,'lon',lon1,'lat',lat1,'speed',speed1,'oren',oren1);
     
      %15年11月27日的数据是激光平地，可以通过速度中值、均值或者速度方差来看
      %测试数据中median(151212)=6  median(160411)=5   median(151127)=13 
