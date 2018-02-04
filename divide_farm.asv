@@ -102,7 +102,7 @@ end
        for k=2:num_size
            deta_oren(k) = getorentation(lat1(k),lon1(k),lat1(k-1),lon1(k-1)) ;
            deta_o(k-1) = abs(deta_oren(k)-deta_oren(k-1));
-           if  deta_o(k-1) >135
+           if  deta_o(k-1) >
                ptsC(C{1,i}(k-1))=0;  
            end     
        end

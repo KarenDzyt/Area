@@ -1,7 +1,7 @@
 clear all;
 
  %从excel中读取数据 
- data='225_20171017';
+ data='77_20171021';
  data1=[data,'.xlsx'];
  [a,txt]=xlsread(data1); %[num, txt]= xlsread(filename, ...)把返回的数据与文本分开保存。
  lon=a(:,1);
@@ -26,22 +26,7 @@ clear all;
  %time_wj2=char(time_wj1);
  %time_wj3=time_wj2(:,[1:2,4:5]);
  
- 
-%   % 根据计算的角度筛选调头点
-%  deta_oren = [];
-%  num_P=length(lon); 
-%  j = 2 ;
-%  deta_oren(1) = getorentation(lat(2),lon(2),lat(1),lon(1));
-%      for i=2:num_P
-%            deta_oren(i) = getorentation(lat(j),lon(j),lat(j-1),lon(j-1)) ;
-%            deta_o(i-1) = abs(deta_oren(i)-deta_oren(i-1));
-%            if  deta_o(i-1) >135
-%                 lon(j-1)=[];
-%                 lat(j-1)=[];
-%                 j=j-1;
-%            end
-%            j=j+1;
-%      end   
+
 
  
 
@@ -65,9 +50,23 @@ numberOfElements = length(lon);
    end    
  end
  
+  % 根据计算的角度筛选调头点
+ deta_oren = [];
+ num_P=length(lon); 
+ j = 2 ;
+ deta_oren(1) = getorentation(lat(2),lon(2),lat(1),lon(1));
+     for i=2:num_P
+           deta_oren(i) = getorentation(lat(j),lon(j),lat(j-1),lon(j-1)) ;
+           deta_o(i) = deta_oren(i)-deta_oren(i-1) ;
+           if  deta_o(j-1) >20
+                lon(j-1)=[];
+                lat(j-1)=[];
+                time_wj1(j-1)=[];
+                j=j-1;
+           end
+           j=j+1;
+     end   
 
-
-     
 
  %计算每一天的作业亩数，分割，一天一次循环 
 num_date=num_date/2;        %天数
