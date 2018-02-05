@@ -15,7 +15,7 @@
         lat(number_now)=[];
         time_wj1(number_now)=[];
      %   speed(number_now)=[];
-      %  oren(number_now)=[];
+       oren(number_now)=[];
 %         time(number_now,:)=[];
 %         date(number_now,:)=[];
 

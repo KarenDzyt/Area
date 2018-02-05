@@ -1,7 +1,7 @@
 clear all;
 
  %从excel中读取数据 
- data='225_20171017';
+ data='77_20171021';
  data1=[data,'.xlsx'];
  [a,txt]=xlsread(data1); %[num, txt]= xlsread(filename, ...)把返回的数据与文本分开保存。
  lon=a(:,1);
@@ -9,16 +9,43 @@ clear all;
  speed=a(:,3);
  oren=a(:,4);
  
+     
  %增添对日期和数字的处理 ，把数据划分为每一天
  time_wj0=txt(:,1);
  time_wj1=time_wj0(2:length(time_wj0));
  
  %首先筛除冗余点
  clearExtraData;
+ 
+  %根据已有角度筛选调头点
+ l = length(oren);
+ deta_o = [];
+ deta_o(1)=0;
+ mark=zeros(l,1);
+ j = 1;
+ for i=2:l
+     deta_o(i) = abs(oren(i)-oren(i-1));
+ end
 
+   % 标记掉头点
+     for i=1:l
+           if  deta_o(i) >135 
+               mark(j)=1;
+               lon(j)=[];
+               lat(j)=[];
+               time_wj1(j)=[];
+               oren(j)=[];
+               j = j-1;
+           end
+           j= j+1;
+     end  
+    
+%      scatter(lon,lat,10,mark,'filled'); 
+     
  time_wj2 = datenum(time_wj1, 'yyyy/mm/dd  HH:MM:SS');  %datenum用来将给定的日期字符串转换为日期数字。
  date= datestr(time_wj2,'yyyy-mm-dd');   %datestr是将日期和时间转换为字符串格式函数。
  time=datestr(time_wj2,'HH:MM:SS');
+ 
  %第一个尝试： 用正则表达式切割
  %S = REGEXP(time_wj1,'\s');
  
@@ -26,23 +53,11 @@ clear all;
  %time_wj2=char(time_wj1);
  %time_wj3=time_wj2(:,[1:2,4:5]);
  
- 
-%   % 根据计算的角度筛选调头点
-%  deta_oren = [];
-%  num_P=length(lon); 
-%  j = 2 ;
-%  deta_oren(1) = getorentation(lat(2),lon(2),lat(1),lon(1));
-%      for i=2:num_P
-%            deta_oren(i) = getorentation(lat(j),lon(j),lat(j-1),lon(j-1)) ;
-%            deta_o(i-1) = abs(deta_oren(i)-deta_oren(i-1));
-%            if  deta_o(i-1) >135
-%                 lon(j-1)=[];
-%                 lat(j-1)=[];
-%                 j=j-1;
-%            end
-%            j=j+1;
-%      end   
 
+% plot(oren);
+% hold on;
+% plot(deta_oren);
+% hold on;
  
 
 start_end=[];
@@ -81,7 +96,7 @@ for i_date=1:num_date   %遍历数组每行，每天分别计算
     lon1=lon(start_end(i_date*2-1):start_end(i_date*2));  %分别存储每天的经纬度
     lat1=lat(start_end(i_date*2-1):start_end(i_date*2));
 %     speed1=speed(start_end(i_date*2-1):start_end(i_date*2));
-%     oren1=oren(start_end(i_date*2-1):start_end(i_date*2));
+    oren1=oren(start_end(i_date*2-1):start_end(i_date*2));
     time1=time(start_end(i_date*2-1):start_end(i_date*2),:);  %存储每天的时间
     date1=date(start_end(i_date*2-1):start_end(i_date*2),:);
 %     pts=struct('date',date1,'time',time1,'lon',lon1,'lat',lat1,'speed',speed1,'oren',oren1);
@@ -142,7 +157,7 @@ for i_date=1:num_date   %遍历数组每行，每天分别计算
 clear lon1;
 clear lat1;
 % clear speed1;
-% clear oren1;
+clear oren1;
 clear time1;
 
    

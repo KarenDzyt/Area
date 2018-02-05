@@ -5,7 +5,7 @@
 % X = [pts.lon,pts.lat];
 X = [lon1,lat1];
 minPts=8;
-E=25;
+E=15;
 P=X';       %矩阵转置
 [C, ptsC] = dbscan(P, E, minPts);
 
@@ -91,22 +91,38 @@ end
 
 
 % 根据计算的角度筛选调头点
-[dim2, num_farm] = size(C);
- for i=1:num_farm
-    if isequal(C{1,i},{}) 
-        continue;
-    end
-       [dim3, num_size] = size(C{1,i});
-        deta_oren = [];
-       deta_oren(1) = getorentation(lat1(2),lon1(2),lat1(1),lon1(1));
-       for k=2:num_size
-           deta_oren(k) = getorentation(lat1(k),lon1(k),lat1(k-1),lon1(k-1)) ;
-           deta_o(k-1) = abs(deta_oren(k)-deta_oren(k-1));
-           if  deta_o(k-1) >135
-               ptsC(C{1,i}(k-1))=0;  
-           end     
-       end
- end
+% [dim2, num_farm] = size(C);
+%  for i=1:num_farm
+%     if isequal(C{1,i},{}) 
+%         continue;
+%     end
+%        [dim3, num_size] = size(C{1,i});
+%         deta_oren = [];
+%        deta_oren(1) = getorentation(lat1(2),lon1(2),lat1(1),lon1(1));
+%        for k=2:num_size
+%            deta_oren(k) = getorentation(lat1(k),lon1(k),lat1(k-1),lon1(k-1)) ;
+%            deta_o(k-1) = abs(deta_oren(k)-deta_oren(k-1));
+%            if  deta_o(k-1) >135
+%                ptsC(C{1,i}(k-1))=0;  
+%            end     
+%        end
+%  end
+
+% 根据已有角度筛选调头点
+% [dim2, num_farm] = size(C);
+%  for i=1:num_farm
+%     if isequal(C{1,i},{}) 
+%         continue;
+%     end
+%        [dim3, num_size] = size(C{1,i});
+%        deta_oren = [];  
+%        for k=2:num_size
+%            deta_oren(k-1) = abs(oren1(k)-oren1(k-1)) ;
+%            if  deta_oren(k-1) >20 
+%                ptsC(C{1,i}(k-1))=0;  
+%            end     
+%        end
+%  end
 
 global area_each;   %全局变量是字符串
  num_size=0;
