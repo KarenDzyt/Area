@@ -1,46 +1,82 @@
 clear all;
 
+ %手动筛选数据集展示及面积计算
+%  datax='training';
+%  datax1=[datax,'.xlsx'];
+%  [ax]=xlsread(datax1); 
+%  lonx=ax(:,1);
+%  latx=ax(:,2);
+%  ptcx=ax(:,3);
+% %  scatter(lonx,latx,10,ptcx,'filled'); 
+%  
+%  Cx={};
+%  Cx{1}=[];
+%  Cx{2}=[];
+%  for i=1:774
+%      if ptcx(i)==1
+%          Cx{1} = [Cx{1} i];
+%      end
+%      if ptcx(i)==2
+%          Cx{2} = [Cx{2} i];
+%      end
+%  end
+%  fukuan =1;
+%   distance_all=0;
+%  area_x=[];
+%  for i=1:2
+%  [dim1, n1] = size(Cx{1,i});
+%        for k=2:n1
+%        wj_distance=getdistance(latx(Cx{1,i}(k)), lonx(Cx{1,i}(k)),latx(Cx{1,i}(k-1)),lonx(Cx{1,i}(k-1)));        
+%          distance_all=distance_all+wj_distance;    
+%        end   
+%        area_ev(i,1)=distance_all * fukuan * 1000 * 0.0015;  %把平方米转化为亩
+%  end
+ 
  %从excel中读取数据 
- data='77_20171021';
+ data='wn128_20171208';
  data1=[data,'.xlsx'];
  [a,txt]=xlsread(data1); %[num, txt]= xlsread(filename, ...)把返回的数据与文本分开保存。
- lon=a(:,1);
- lat=a(:,2);
- speed=a(:,3);
- oren=a(:,4);
- 
+ lon=a(:,3);
+ lat=a(:,4);
+%  speed=a(:,3);
+ oren=a(:,6);
+
      
  %增添对日期和数字的处理 ，把数据划分为每一天
- time_wj0=txt(:,1);
+ time_wj0=txt(:,2);
  time_wj1=time_wj0(2:length(time_wj0));
  
  %首先筛除冗余点
  clearExtraData;
  
-  %根据已有角度筛选调头点
- l = length(oren);
- deta_o = [];
- deta_o(1)=0;
- mark=zeros(l,1);
- j = 1;
- for i=2:l
-     deta_o(i) = abs(oren(i)-oren(i-1));
- end
 
-   % 标记掉头点
-     for i=1:l
-           if  deta_o(i) >135 
-               mark(j)=1;
-               lon(j)=[];
-               lat(j)=[];
-               time_wj1(j)=[];
-               oren(j)=[];
-               j = j-1;
-           end
-           j= j+1;
-     end  
-    
-%      scatter(lon,lat,10,mark,'filled'); 
+%   根据已有角度筛选调头点
+%  l = length(oren);
+%  deta_o = [];
+%  deta_o(1)=0;
+%  a1=zeros(l,1); %标记调头点
+%  j = 1;
+%  for i=2:l
+%      deta_o(i) = abs(oren(i)-oren(i-1));
+%  end
+% % plot(oren);
+% % hold on;
+% % plot(deta_o);
+% % hold on;
+%    % 标记掉头点
+%      for i=1:l
+%            if  deta_o(i) >20
+%                a1(j)=1;
+% %                lon(j)=[];
+% %                lat(j)=[];
+% %                time_wj1(j)=[];
+% %                oren(j)=[];
+%                j = j-1;
+%            end
+%            j= j+1;
+%      end  
+%     
+%   scatter(lon,lat,10,a1,'filled'); 
      
  time_wj2 = datenum(time_wj1, 'yyyy/mm/dd  HH:MM:SS');  %datenum用来将给定的日期字符串转换为日期数字。
  date= datestr(time_wj2,'yyyy-mm-dd');   %datestr是将日期和时间转换为字符串格式函数。
@@ -54,10 +90,7 @@ clear all;
  %time_wj3=time_wj2(:,[1:2,4:5]);
  
 
-% plot(oren);
-% hold on;
-% plot(deta_oren);
-% hold on;
+
  
 
 start_end=[];
@@ -162,7 +195,7 @@ clear time1;
 
    
 end
-xlswrite('test.xlsx',xlscell)
+xlswrite('result_wn128_20171208.xlsx',xlscell)
 % sum_shensong=0;
 % sum_pingdi=0;
 % sum_wj=0;

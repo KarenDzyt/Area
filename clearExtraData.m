@@ -8,6 +8,7 @@
 %首先筛除冗余点,得到数据集a0
  numberOfElements_extra = length(lon);
  number_now=2;
+ a0 = zeros(numberOfElements_extra,1);
  for i=2:numberOfElements_extra
    
    if(  lon(number_now)==lon(number_now-1) && lat(number_now)==lat(number_now-1)) 
@@ -18,7 +19,7 @@
        oren(number_now)=[];
 %         time(number_now,:)=[];
 %         date(number_now,:)=[];
-
+         a0(i)=1;
        number_now=number_now-1;
    end
    number_now=number_now+1;

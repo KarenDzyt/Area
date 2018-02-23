@@ -5,7 +5,7 @@
 % X = [pts.lon,pts.lat];
 X = [lon1,lat1];
 minPts=8;
-E=15;
+E=25;
 P=X';       %¾ØÕó×ªÖÃ
 [C, ptsC] = dbscan(P, E, minPts);
 
